@@ -20,3 +20,6 @@ AuroraLedger is a solo-curated utility that keeps track of my random creative ex
 
 ## How to wander
 The project is intentionally light on dependencies. I planing to keep everything in plain Python, add a few helper modules, and steadily push commits that document each tiny leap.
+
+## Sample ledger entry
+There is a small example in `examples/ledger-sample.json` that shows how an entry is recorded after running the CLI once.
