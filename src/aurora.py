@@ -7,6 +7,8 @@ import json
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
+from prompting import build_prompt, extend_prompt
+
 LEDGER_PATH = Path("ledger.json")
 
 @dataclass
@@ -43,11 +45,6 @@ class AuroraLedger:
             json.dump([asdict(entry) for entry in self.entries], handle, indent=2)
 
 
-def build_prompt(entry: LedgerEntry) -> str:
-    tags = ", ".join(entry.tags)
-    return f"[Prompt] {entry.description} | {entry.category} | {tags}"
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="AuroraLedger personal ledger tool")
     parser.add_argument("description", help="What idea or artifact to log")
@@ -59,6 +56,8 @@ def main() -> None:
     entry = LedgerEntry.now(args.description, args.category, args.tags)
     ledger.add_entry(entry)
     print(build_prompt(entry))
+    print()
+    print(extend_prompt(entry))
 
 
 if __name__ == "__main__":
