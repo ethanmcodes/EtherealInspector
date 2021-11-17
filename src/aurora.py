@@ -2,25 +2,14 @@
 from __future__ import annotations
 
 import argparse
-import datetime
 import json
-from dataclasses import dataclass, asdict
+from dataclasses import asdict
 from pathlib import Path
 
+from model import LedgerEntry
 from prompting import build_prompt, extend_prompt
 
 LEDGER_PATH = Path("ledger.json")
-
-@dataclass
-class LedgerEntry:
-    description: str
-    category: str
-    tags: list[str]
-    created_at: str
-
-    @classmethod
-    def now(cls, description: str, category: str, tags: list[str]) -> "LedgerEntry":
-        return cls(description, category, tags, datetime.datetime.utcnow().isoformat())
 
 
 class AuroraLedger:
@@ -53,7 +42,7 @@ def main() -> None:
     args = parser.parse_args()
 
     ledger = AuroraLedger()
-    entry = LedgerEntry.now(args.description, args.category, args.tags)
+    entry = LedgerEntry.capture(args.description, args.category, args.tags)
     ledger.add_entry(entry)
     print(build_prompt(entry))
     print()
